@@ -6,6 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields=['id','username','email','password','phone']
+        ref_name = 'CustomUserSerializer'
     def create(self, validated_data):
         validated_data['is_staff']=False
         validated_data['is_superuser']=False
@@ -20,9 +21,10 @@ class ExpensesSerializrer(serializers.ModelSerializer):
         fields=['id','user','category','amount','created_at']
         read_only_fields = ['user','created_at']
 
-
     def get_user(self, obj):
         return obj.user.username
+    
+
 class PlanSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     # plan=PlanItemSerializer(many=True,read_only=True,source='planitems_set')
