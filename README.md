@@ -6,6 +6,7 @@ Budget Project - Personal Budget Management REST API
 A Django REST Framework backend application for personal budget tracking and expense management. It allows users to register, log their daily expenses, create monthly budget plans, and receive real-time feedback on whether they are staying within their financial targets.
 
 Core Features
+
 User Management - Custom user model with UUID primary keys, registration, and JWT-based authentication (via Djoser + SimpleJWT).
 Expense Tracking - Users can create, read, update, and delete expenses categorized by type (e.g. food, transport). Expenses are filterable by year, month, day, and hour.
 Budget Plans - Users can set monthly budget plans with an overall spending target and a target date.
