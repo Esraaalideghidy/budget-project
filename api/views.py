@@ -9,7 +9,6 @@ from django.db.models import Sum
 from datetime import datetime
 from django.utils.timezone import now as timezone_now
 from datetime import date
-
 from api import serializers
 
 # Create your views here.
@@ -19,7 +18,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset=User.objects.all()
     serializer_class=UserSerializer
     # permission_classes = [IsAuthenticated]
-
 
 
 class PlanViewSet(viewsets.ModelViewSet):
@@ -84,7 +82,7 @@ class ExpensesViewSet(viewsets.ModelViewSet):
                     user=request.user,
                     created_at__year=year,
                     created_at__month=month
-                ))
+                ))  
                 daily_total=sum(expense.amount for expense in Expenses.objects.filter(
                     user=request.user,
                     created_at__date=searched_date,
@@ -92,7 +90,9 @@ class ExpensesViewSet(viewsets.ModelViewSet):
 
                 plan = Plan.objects.filter(
                     user=request.user,
-                    date__gte=searched_date
+                    # date__gte=searched_date
+                    date__year =year,
+                    date__month = month
                 ).first()
 
                 if plan:
@@ -118,9 +118,55 @@ class ExpensesViewSet(viewsets.ModelViewSet):
             def perform_create(self, serializer):
                 serializer.save(user=self.request.user)
         
-    
+
+class IsExecedThePlanItemsAmount(viewsets.ModelViewSet):
+    # queryset=Expenses.objects.all()
+        permission_classes = [IsAuthenticated]
+        def list(self, request, *args, **kwargs):
+            today = timezone_now().date()
+            year = int(request.GET.get('year', today.year))
+            month = int(request.GET.get('month', today.month))
+            category=request.GET.get('category')
+            user_plan = Plan.objects.filter(
+                user=request.user,
+                date__year=year,
+                date__month=month
+            ).first()
+
+            amout_of_plan_item=PlanItems.objects.filter(
+                plan=user_plan,
+                category=category
+            ).first().amount if user_plan else None
+
+            total_expenses=sum(expense.amount for expense in Expenses.objects.filter(
+                user=request.user,
+                category=category,
+                created_at__year=year,
+                created_at__month=month
+            ))
+
+            if amout_of_plan_item:
+                if total_expenses > amout_of_plan_item:
+                    note = f"You have exceeded your plan item amount ({amout_of_plan_item}) for category '{category}' with total expenses of {total_expenses}."
+                else:
+                    note = f"You are within your plan item amount ({amout_of_plan_item}) for category '{category}'. Keep it up!"
+            else:
+                note = f"No plan item set for category '{category}'."
+
+
+           
         
-        
+
+
+
+
+
+
+
+
+
+
     
+
 
 

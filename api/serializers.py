@@ -35,6 +35,7 @@ class PlanSerializer(serializers.ModelSerializer):
 
     def get_user(self, obj):
         return obj.user.username
+    
 
 class PlanItemSerializer(serializers.ModelSerializer):
     plan=PlanSerializer(read_only=True)
