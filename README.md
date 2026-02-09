@@ -14,21 +14,28 @@ Plan Items - Each plan can be broken down into per-category budget allocations (
 Budget Monitoring - The API calculates daily and monthly spending totals and compares them against the user's active plan, returning warnings when a target is exceeded or encouragement when spending is on track.
 Per-Category Monitoring - A dedicated endpoint checks whether spending in a specific category has exceeded the allocated plan item amount.
 API Documentation - Auto-generated Swagger and ReDoc documentation via drf-yasg.
+
+
 Tech Stack
-Layer	Technology
-Framework	Django 5.2
-API	Django REST Framework 3.16
-Auth	JWT (SimpleJWT + Djoser)
-Routing	drf-nested-routers
-Docs	drf-yasg (Swagger / ReDoc)
-Database	SQLite (development)
-IDs	UUID (all models)
+
+Layer     	Technology
+Framework	   Django 5.2
+API	Django   REST Framework 3.16
+Auth	       JWT (SimpleJWT + Djoser)
+Routing	     drf-nested-routers
+Docs	       drf-yasg (Swagger / ReDoc)
+Database	   SQLite (development)
+IDs	         UUID (all models)
+
+
+
 API Endpoints
-Endpoint	Description
-/api/users/	User registration & management
+
+Endpoint	      Description
+/api/users/	    User registration & management
 /api/expenses/	CRUD expenses + budget summary
-/api/plans/	CRUD monthly budget plans
+/api/plans/	    CRUD monthly budget plans
 /api/plans/{id}/planitems/	CRUD category-level budget items (nested)
-/api/auth/	Djoser auth (login, token, etc.)
-/swagger/	Swagger UI documentation
-/redoc/	ReDoc documentation
+/api/auth/	    Djoser auth (login, token, etc.)
+/swagger/	      Swagger UI documentation
+/redoc/	        ReDoc documentation
